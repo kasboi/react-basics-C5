@@ -1,39 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import BlogList from "./BlogList";
 
 function Home() {
-  const firstName = "John";
-  let lastName = "Wick";
-  // value, setValue
-  const [fName, setFname] = useState("Bola");
-  const [lName, setLname] = useState("Ige");
+  const [blogs, setBlogs] = useState(null);
+  const [isPending, setIsPending] = useState(true);
+  const [error, setError] = useState(false);
 
-  const handleReset = () => {
-    setFname("Bola");
-    setLname("Ige");
-  };
+  useEffect(() => {
+    async function fetchData(url) {
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+
+        setBlogs(data);
+        setIsPending(false);
+      } catch (error) {
+        setIsPending(false);
+        setError(error.message);
+      }
+    }
+
+    setTimeout(() => {
+      fetchData("http://localhost:3000/blogs");
+    }, 1000);
+  }, []);
 
   return (
     <div className="home">
-      <h2>Homepage</h2>
-      <p>
-        The name of the assassin is {firstName} - {lastName}
-      </p>
-      <button
-        onClick={() => {
-          console.log(lastName);
-          lastName = "Olamide";
-          console.log(lastName);
-        }}
-      >
-        Click Me
-      </button>
-      <h2>UseState in Action!!!</h2>
-      <p>
-        The name of the slain A.G is {fName} - {lName}
-      </p>
-      <button onClick={() => setFname("Naruto")}>Change first name</button>
-      <button onClick={() => setLname("Uzumaki")}>Change last name</button>
-      <button onClick={handleReset}>Reset</button>
+      {isPending && <h1>Loading...</h1>}
+      {error && <h2>There was an error fetching blog posts</h2>}
+      {blogs && <BlogList blogs={blogs} title={"All Blogs"} />}
     </div>
   );
 }
