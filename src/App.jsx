@@ -1,3 +1,5 @@
+import { Outlet } from "react-router";
+import Create from "./Create";
 import Home from "./Home";
 import Navbar from "./Navbar";
 
@@ -8,7 +10,7 @@ function App() {
       <Navbar />
       {/* Content */}
       <div className="content">
-        <Home />
+        <Outlet />
       </div>
     </div>
   );
