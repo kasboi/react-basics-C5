@@ -5,8 +5,10 @@ import "./index.css";
 import App from "./App.jsx";
 import Create from "./Create.jsx";
 import Home from "./Home.jsx";
+import BlogDetails from "./BlogDetails.jsx";
+import NotFound from "./NotFound.jsx";
 
-const router = createBrowserRouter([
+const routes = createBrowserRouter([
   {
     path: "/",
     element: <App />,
@@ -19,12 +21,20 @@ const router = createBrowserRouter([
         path: "create",
         element: <Create />,
       },
+      {
+        path: "/blogs/:id",
+        element: <BlogDetails />,
+      },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <RouterProvider router={routes} />
   </StrictMode>,
 );
